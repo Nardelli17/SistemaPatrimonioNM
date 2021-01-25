@@ -8,17 +8,13 @@ package dao;
 import java.util.ArrayList;
 import modelo.Item;
 
-
 /**
  *
- * @author aluno
+ * @author vitor
  */
 public interface ItemDao {
-    
     public void inserir(Item item);
     public void alterar(Item item);
     public void excluir(Item item);
     public void buscar(int id);
-    public ArrayList listar();
-    
 }

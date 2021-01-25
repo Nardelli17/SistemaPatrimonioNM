@@ -15,8 +15,6 @@ public class Item {
     private int idItem;
     private int codigoItem;
     private String descricaoItem;
-    private Date dataLocacao;
-    private Date dataDevolucao;
 
     public int getIdItem() {
         return idItem;
@@ -41,20 +39,4 @@ public class Item {
     public void setDescricaoItem(String descricaoItem) {
         this.descricaoItem = descricaoItem;
     }
-
-    public Date getDataLocacao() {
-        return dataLocacao;
-    }
-
-    public void setDataLocacao(Date dataLocacao) {
-        this.dataLocacao = dataLocacao;
-    }
-
-    public Date getDataDevolucao() {
-        return dataDevolucao;
-    }
-
-    public void setDataDevolucao(Date dataDevolucao) {
-        this.dataDevolucao = dataDevolucao;
-    } 
 }

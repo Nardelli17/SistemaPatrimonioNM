@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import modelo.Funcionario;
 import modelo.Item;
+import modelo.Pessoa;
 
 /**
  *
@@ -35,23 +37,20 @@ public class ItemDaoImpl implements ItemDao {
         }
     }
 
-    public void inserirLocacao() {
-        String insertTableSQL = "INSERT INTO item" + "(codigoItem, descricaoItem,dataLocacao,dataDevolucao) VALUES" + "(?,?,?,?) ;";
-        PreparedStatement preparedStatement;
-        Item item = new Item();
-        try {
-            preparedStatement = ConexaoBd.getConexao().prepareStatement(insertTableSQL);
-            preparedStatement.setInt(1, item.getCodigoItem());
-            preparedStatement.setString(2, item.getDescricaoItem());
-            preparedStatement.setDate(3, (Date) item.getDataLocacao());
-            preparedStatement.setDate(4, (Date) item.getDataDevolucao());
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
+//    public void inserirLocacao() {
+//        String insertTableSQL = "INSERT INTO item" + "(codigoItem, descricaoItem) VALUES" + "(?,?) ;";
+//        PreparedStatement preparedStatement;
+//        Item item = new Item();
+//        try {
+//            preparedStatement = ConexaoBd.getConexao().prepareStatement(insertTableSQL);
+//            preparedStatement.setInt(1, item.getCodigoItem());
+//            preparedStatement.setString(2, item.getDescricaoItem());
+//            preparedStatement.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
     public Item procuraItemPeloCodigo(int codigo) {
         try {
             String sql = "select * from item where codigoItem = ? ;";
@@ -62,8 +61,7 @@ public class ItemDaoImpl implements ItemDao {
             Item item = new Item();
             if (rs.next()) {
                 item.setDescricaoItem(rs.getString("descricaoItem"));
-                item.setDataLocacao(rs.getDate("dataLocacao"));
-                item.setDataLocacao(rs.getDate("dataDevolucao"));
+                item.setIdItem(rs.getInt("idItem"));
             }
             rs.close();
             con.close();
@@ -78,15 +76,14 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public void alterar(Item item) {
 
-        String insertTableSQL = "UPDATE item SET codigoItem = ? , descricaoItem = ? ,dataLocacao = ? ,dataDevolucao = ?  WHERE idItem = ? ;";
+        String insertTableSQL = "UPDATE item SET descricaoItem = ?  WHERE idItem = ? ;";
         PreparedStatement preparedStatement;
 
+        Item itemBuscaId = procuraItemPeloCodigo(item.getCodigoItem());
         try {
             preparedStatement = ConexaoBd.getConexao().prepareStatement(insertTableSQL);
-            preparedStatement.setInt(1, item.getCodigoItem());
-            preparedStatement.setString(2, item.getDescricaoItem());
-            preparedStatement.setDate(3, (Date) item.getDataLocacao());
-            preparedStatement.setDate(4, (Date) item.getDataDevolucao());
+            preparedStatement.setString(1, item.getDescricaoItem());
+            preparedStatement.setInt(2, itemBuscaId.getIdItem());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -122,8 +119,6 @@ public class ItemDaoImpl implements ItemDao {
                 item.setIdItem(rs.getInt("idItem"));
                 item.setCodigoItem(rs.getInt("codigoItem"));
                 item.setDescricaoItem(rs.getString("descricaoItem"));
-                item.setDataLocacao(rs.getDate("dataLocacao"));
-                item.setDataDevolucao(rs.getDate("dataDevolucao"));
 
             }
             rs.close();
@@ -133,31 +128,6 @@ public class ItemDaoImpl implements ItemDao {
             e.printStackTrace();
         }
 
-    }
-
-    @Override
-    public ArrayList listar() {
-        ArrayList<Item> listaItens = new ArrayList<Item>();
-
-        try {
-            String sql = "select * from aluno ;";
-            PreparedStatement con = ConexaoBd.getConexao().prepareStatement(sql);
-
-            ResultSet rs = con.executeQuery();
-
-            while (rs.next()) {
-                Item item = new Item();
-               
-
-            }
-            rs.close();
-            con.close();
-            return listaItens;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
 }
